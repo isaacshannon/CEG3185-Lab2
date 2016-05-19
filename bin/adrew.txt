@@ -1,0 +1,25 @@
+As per our conversation, I'm sending source code for my project.
+ 
+MyServer.java is the server program and MyClientWin.java is the client.
+ 
+Java programs can be compiled (on a computer with jdk installed) with the following 
+statements:
+ 
+javac MyServer.java
+javac MyClientWin.java
+ 
+The server program must be started with a command line parameter - port number
+(it could be any valid port number not just 4444):
+ 
+java MyServer 4444
+ 
+The client program can be started on any other computer (which also has jdk installed) with
+the following command:
+ 
+java MyClientWin
+ 
+When "connect" button is pressed, the program will ask for IP address of the server, name of the person joining the chat (used to identify participants), and server's port number. In example above, it was 4444.
+ 
+If you have any questions, please let me know.
+Thank you,
+Andrew
