@@ -7,13 +7,6 @@ import java.io.*;
 public class MyServer {
 
 	public static void main(String[] args) throws IOException {
-
-		//
-		// sockets and other variables declaration
-		//
-		// maximum number of clients connected: 10
-		//
-
 		ServerSocket serverSocket = null;
 		Socket[] client_sockets;
 		client_sockets = new Socket[10];
@@ -24,13 +17,7 @@ public class MyServer {
 		BufferedReader[] s_in;
 		s_in = new BufferedReader[10];
 
-
-
-		//
-		//get port number from the command line
-		//
 		int nPort = 4444; // default 
-		//nPort = Integer.parseInt(args[0]);
 
 		boolean bListening = true;
 
@@ -40,17 +27,10 @@ public class MyServer {
 		boolean bAnyMsg = false;
 		boolean bAlive = false;
 
-		//
 		// initialize some var's for array handling
-		//
 		int s_count = 0;
-		int i = 0;
-		int k = 0;
-		int j = 0;
 
-		//
 		// create server socket
-		//
 		try {
 			serverSocket = new ServerSocket(nPort);
 
@@ -116,53 +96,14 @@ public class MyServer {
 			}
 			catch (InterruptedIOException e) {}
 
-			//System.out.println(" ");
-
-			//
-			// is there anything to send
-			//
-			if (bAnyMsg)
-			{
-				System.out.println("Sending messages - select stations");
-
-				//
-				// select stations
-				//
-				for (i=0;i<s_count;i++)
-					for (j=0;j<nMsg;j++)
-					{
-
-						s_out[i].println("SEL" + sMessages[j]);
-
-						System.out.println("writing to station!");
-					}
-				//
-				// all messages sent - clear messages array
-				//
-				for (j=0;j<nMsg;j++)
-					sMessages[j] = null;
-				bAnyMsg = false;
-				nMsg = 0;
-			}
-
 			if (s_count >0){
-				//System.out.println("Polling stations!");
-
-				// poll stations
-				for (i=0;i<s_count;i++){
-					//
-					// send POLL type of request
-					//
-
+				//read from sockets
+				for (int i=0;i<s_count;i++){
 					//s_out[i].println("POL");
-
-
 					inputLine = null;
 
 					try {
-						//
 						// read respose from the client
-						//
 						inputLine = s_in[i].readLine();
 
 					} catch (InterruptedIOException e) {
@@ -172,30 +113,18 @@ public class MyServer {
 					if(inputLine != null){
 						System.out.println("Got message: " + inputLine);
 					}
-
-
 				}
-
 			} 
 
-			//
-			// stop server automatically when
-			// all clients disconnect
-			//
-			// no active clients
-			//
+			//warning, no clients
 			if (s_count < 1){
-				System.out.println("All clients are disconnected");
-				//bListening = false;
+				System.out.println("No clients are connected");
 			}
 
 		}// end of while loop
 
-		//
 		// close all sockets
-		//
-
-		for (i=0;i<s_count;i++){
+		for (int i=0;i<s_count;i++){
 			client_sockets[i].close();
 		}
 

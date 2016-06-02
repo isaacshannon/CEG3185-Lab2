@@ -86,29 +86,16 @@ public class MyClientWin extends Applet implements Runnable
 		if (arg == "Connect" && !bConnected) {
 
 			try {
-				//				// get server IP and name of client				//
-				//sIP = JOptionPane.showInputDialog("Enter IP of chat server:");
-				//				// get client name used for communication to other people				//				//sMyId = JOptionPane.showInputDialog("Enter your name:");
-				//
-				//get port number
-				//
-				int nPort = 4444; // default 
-				//nPort = Integer.parseInt(JOptionPane.showInputDialog("Enter port number:"));
-				//				// connect to the socket				//
-				mySocket = new Socket(sIP, nPort);
-				// optional - setting socket timeout to 5 secs				// this is not necessary because application				// runs with multiple threads				//
-				//mySocket.setSoTimeout(5000);				bConnected = true;
-				//
+				int nPort = 4444; 
+				mySocket = new Socket(sIP, nPort);				bConnected = true;
+
 				// define input and output streams for reading and
-				// writing to the socket
-				//				out = new PrintWriter(mySocket.getOutputStream(), true);
+				// writing to the socket				out = new PrintWriter(mySocket.getOutputStream(), true);
 				in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
 				out.println(sMyId);
-				//				// set screen messages				//
+				// set screen messages
 				sConnection = "Connected to the chat server!";			
-				//
-				// define new thread
-				//				thread = new Thread(this);
+				//start thread				thread = new Thread(this);
 				thread.start();	
 			} catch (UnknownHostException e) {
 				bConnected = false;
@@ -122,25 +109,11 @@ public class MyClientWin extends Applet implements Runnable
 		//*****************************************************	
 		if (arg == "Send Message") {
 			if (textField.getText() != null){
-				//
-				// copy content of the message text into 
-				// internal buffer for later processing
-				// only one message can be stored into the
-				// buffer
-				//
 				fromUserStr = textField.getText();
 				out.println("ACK"+ sMyId + " says: " + fromUserStr);
-				savedMsg = textField.getText();
 				textField.setText("");
 			}
-			else
-				fromUserStr = null;
-
-		}
-
-		//
-		// repaint the screen
-		//           
+		}           
 		repaint();
 
 		return true;
@@ -184,13 +157,8 @@ public class MyClientWin extends Applet implements Runnable
 		int currentState = INITIAL; 
 
 		while (bLoopForever){
-			//
-			// call function to read/write from/to server
-			//			currentState = checkServer(currentState);
-			try {
-				//
-				// put thread into some delay to 				// give more cpu time to other processing
-				//				thread.sleep(10);
+			//read from server			currentState = checkServer(currentState);
+			try {				thread.sleep(10);
 			} catch (InterruptedException e) {}
 		}
 	}// end of run
@@ -209,15 +177,9 @@ public class MyClientWin extends Applet implements Runnable
 			if ((fromServerStr = in.readLine()) != null){
 
 				//read message from server
-				//fromServerStr = fromServerStr.substring(4,fromServerStr.length());
 				sTemp = textArea.getText();	
 				textArea.setText(sTemp + "\n" + fromServerStr);
 			}
-			
-			/*if(fromUserStr!=null){
-				out.println("ACK"+ sMyId + " says: " + fromUserStr);
-				fromUserStr = null;
-			}*/
 
 		}catch (InterruptedIOException e) { }	
 		catch (IOException e) { }
