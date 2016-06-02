@@ -60,10 +60,6 @@ public class MyClientWin extends Applet implements Runnable
 
 		g.drawString(sConnection, 60, 330);
 
-		/*try {
-			fromServerStr = in.readLine();		}catch (InterruptedIOException e) { }	
-			if (fromServerStr) != null) {					textArea.setText(textArea.getText()+ "\n" + fromServerStr);				}		 */
-
 	}
 	//***********************************************
 	// trapping button actions
@@ -91,13 +87,13 @@ public class MyClientWin extends Applet implements Runnable
 
 			try {
 				//				// get server IP and name of client				//
-				sIP = JOptionPane.showInputDialog("Enter IP of chat server:");
-				//				// get client name used for communication to other people				//				sMyId = JOptionPane.showInputDialog("Enter your name:");
+				//sIP = JOptionPane.showInputDialog("Enter IP of chat server:");
+				//				// get client name used for communication to other people				//				//sMyId = JOptionPane.showInputDialog("Enter your name:");
 				//
 				//get port number
 				//
 				int nPort = 4444; // default 
-				nPort = Integer.parseInt(JOptionPane.showInputDialog("Enter port number:"));
+				//nPort = Integer.parseInt(JOptionPane.showInputDialog("Enter port number:"));
 				//				// connect to the socket				//
 				mySocket = new Socket(sIP, nPort);
 				// optional - setting socket timeout to 5 secs				// this is not necessary because application				// runs with multiple threads				//
@@ -133,6 +129,7 @@ public class MyClientWin extends Applet implements Runnable
 				// buffer
 				//
 				fromUserStr = textField.getText();
+				out.println("ACK"+ sMyId + " says: " + fromUserStr);
 				savedMsg = textField.getText();
 				textField.setText("");
 			}
@@ -210,53 +207,18 @@ public class MyClientWin extends Applet implements Runnable
 		try {
 			// read from the server socket
 			if ((fromServerStr = in.readLine()) != null){
-				// simplified frame types: SEL, POL, ACK, NAC
-				// determine what type of frame has been received
-				// this is a simplified way of doing
-				sFrameType = fromServerStr.substring(0,3);
 
-				// received SELECT type of frame
-				if (sFrameType.equals("SEL")) {
-					fromServerStr = fromServerStr.substring(4,fromServerStr.length());
-					sTemp = textArea.getText();
-
-					// put message on screen	
-					textArea.setText(sTemp + "\n" + fromServerStr);
-				}
-
-				// if received frame was POLLING
-				// and data to be send 
-				// return ACK with data
-				// otherwise
-				// return NACK frame
-				if (sFrameType.equals("POL")) {
-					// message in stack to be send to the server
-					//if (fromUserStr != null){
-
-					switch(currentState){
-					case INITIAL:
-						out.println("ACK"+ "REQUEST_DECODE");
-						newState = REQUEST_SENT;
-						fromUserStr = null;
-						break;
-					case REQUEST_SENT:
-						out.println("NAC");
-						break;
-					case WAIT_RESPONSE_RECEIVED:
-						break;
-					case READY_RESPONSE_RECEIVED:
-						out.println("ACK"+ sMyId + " says: " + fromUserStr);
-						fromUserStr = null;
-						break;
-					case MSG_SENT:
-						break;
-					default:
-						break;
-					}
-					//}					//else
-					//out.println("NAC");
-				}
+				//read message from server
+				//fromServerStr = fromServerStr.substring(4,fromServerStr.length());
+				sTemp = textArea.getText();	
+				textArea.setText(sTemp + "\n" + fromServerStr);
 			}
+			
+			/*if(fromUserStr!=null){
+				out.println("ACK"+ sMyId + " says: " + fromUserStr);
+				fromUserStr = null;
+			}*/
+
 		}catch (InterruptedIOException e) { }	
 		catch (IOException e) { }
 
