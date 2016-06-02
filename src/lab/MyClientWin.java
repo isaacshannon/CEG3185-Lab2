@@ -1,3 +1,4 @@
+package lab;
 import java.awt.*;
 import java.applet.*;
 import java.net.*;
