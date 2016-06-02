@@ -1,7 +1,11 @@
+import java.awt.*;
+import java.applet.*;
 import java.net.*;
+import javax.swing.*;
 import java.io.*;
 
 public class MyServer {
+	
     public static void main(String[] args) throws IOException {
         
         //
@@ -19,6 +23,7 @@ public class MyServer {
         s_out = new PrintWriter[10];
         BufferedReader[] s_in;
         s_in = new BufferedReader[10];
+        
         
         
         //
@@ -68,12 +73,14 @@ public class MyServer {
         //
         // main server loop
         //
+        System.out.println("Server starting up...");
+        System.out.println("Looking for new clients");
 		while (bListening){
 			
 			bAlive = false;
 			
 			try {
-				System.out.println("looking for new clients");
+				//System.out.println("looking for new clients");
 				//
 				// trying to listen to the socket to accept
 				// clients
@@ -109,7 +116,7 @@ public class MyServer {
 			}
 			catch (InterruptedIOException e) {}
 
-			System.out.println(" ");
+			//System.out.println(" ");
 			
 			//
 			// is there anything to send
@@ -139,7 +146,7 @@ public class MyServer {
 			}
 			
 			if (s_count >0){
-				System.out.println("Polling stations!");
+				//System.out.println("Polling stations!");
 			
 				// poll stations
 				for (i=0;i<s_count;i++){
@@ -162,7 +169,7 @@ public class MyServer {
 						inputLine = null;}
 					  catch (java.net.SocketException e) {}
 					
-					System.out.println("Got response: " + inputLine);
+					//System.out.println("Got response: " + inputLine);
 					
 									
 					//
